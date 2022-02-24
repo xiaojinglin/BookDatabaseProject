@@ -103,27 +103,26 @@ def add():
 
 
 def update(the_book):
-    book = {'Title': the_book.title,
-            'Author': the_book.author, 
-            'Published': the_book.published_date,
-            'Price': the_book.price/100}
+    book = {'title': the_book.title,
+            'author': the_book.author, 
+            'published date': the_book.published_date.strftime('%B %d, %Y'),
+            'price': the_book.price/100}
 
     for key, value in book.items():
-        print(f'{key}: {value}')
-        choice = input('Enter "e" to edit {key} or "k" to keep the old {key}: ')
+        print(f'Current {key}: {value}')
+        choice = input(f'Enter "e" to edit {key} or "k" to keep the old {key}: ')
         if choice == 'k':
             continue
         elif choice == 'e':
-            print(f'Enter the new {key}')
-            if key == 'Title':
+            print(f'Enter the new value')
+            if key == 'title':
                 the_book.title = input(f'{key}:')
-            elif key == 'Author':
+            elif key == 'author':
                 the_book.author = input(f'{key}:')
-            elif key == 'Published':
+            elif key == 'published date':
                 the_book.published_date = get_date()
-            elif key == 'Price':
+            elif key == 'price':
                 the_book.price == get_price()
-
     session.commit()
 
 
@@ -139,7 +138,7 @@ def search():
     sub_choice = menu(menus['sub_menu'])
     if sub_choice == '1':
         update(the_book)
-        print('Book edited!')
+        print('Book updated!')
         time.sleep(1.5)
     elif sub_choice == '2':
         session.delete(the_book)
@@ -147,6 +146,18 @@ def search():
         print('Book deleted!')
         time.sleep(1.5)
 
+
+def analysis():
+    oldest_book  = session.query(Book).order_by(Book.published_date).first()
+    newest_book  = session.query(Book).order_by(Book.published_date.desc()).first()
+    total_books = session.query(Book).count()
+    python_books = session.query(Book).filter(Book.title.like('%python%')).count()
+    print(f'''\n********BOOK ANALYSIS********
+          \rOldest book: {oldest_book}    
+          \rNewest book: {newest_book}
+          \rTotal Number of Books: {total_books}
+          \rTotal Number of Python Books: {python_books}''')
+    input('\nPress enter to return to the main menu')
 
 def app():
     app_running = True
@@ -162,17 +173,12 @@ def app():
         elif choice == '3':
             search()
         elif choice == '4':
-            pass #analysis()
+            analysis()
         else:
             print('Goodbye')
             app_running = False
 
 if __name__ == '__main__':
     Base.metadata.create_all(engine)
-    
     add_csv()
     app()
-    # for book in session.query(Book):
-    #     print(book)
-    # add()
-    # search()
