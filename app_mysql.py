@@ -169,14 +169,13 @@ def search():
 def analysis():
     cur.execute("SELECT * FROM books ORDER BY publish_date")
     books = cur.fetchall()
-    print(books)
     oldest_book  = books[0]
     newest_book  = books[-1]
     total_books = cur.rowcount
     cur.execute("SELECT * FROM books WHERE title like '%python%'")
     print(f'''\n********BOOK ANALYSIS********
           \rOldest book: {oldest_book[1]}
-          \rNewest book: {newest_book[2]}
+          \rNewest book: {newest_book[1]}
           \rTotal Number of Books: {total_books}
           \rTotal Number of Python Books: {cur.rowcount}''')
     input('\nPress enter to return to the main menu')
