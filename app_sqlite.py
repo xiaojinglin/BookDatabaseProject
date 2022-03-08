@@ -5,7 +5,6 @@ from models import (engine, session,
 import csv
 import time
 import datetime
-import re
 
 menus = {'main_menu': ['Add Book', 'View all books', 'Search for a book', 'Book Analysis', 'Exit'],
         'sub_menu': ['Edit entry', 'Delete entry', 'Return to main menu']
