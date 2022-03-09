@@ -1,4 +1,3 @@
-from secrets import choice
 from models import (engine, session,
                     Base, Book, Member)
 from get_input import menus, menu, get_member_id
